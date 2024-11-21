@@ -28,7 +28,7 @@ Python is a clear and powerful object-oriented programming language, comparable 
 
 On many systems Python comes pre-installed, you can try running the python command to start the Python interpreter to check and see if it is already installed. On windows you can try the py command which is a launcher which is more likely to work. If it is installed you will see a response which will include the version number, for example:
 
-![Alt text](./images/1.png "a title")
+![Alt text](./images/1.png "a title") *image 1*
 
 If you don't see this, you will need to install Python on your system.
 
@@ -36,4 +36,4 @@ If the version number is Python 2.x.y (where x and y are any number) you are usi
 
 If you do not have Python installed or need a newer version you can go to:
 
-[![App Platorm](./images/2.png)](https://www.python.org/downloads/)
+[![App Platorm](./images/2.png)](https://www.python.org/downloads/) *image 2*
