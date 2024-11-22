@@ -37,3 +37,169 @@ If the version number is Python 2.x.y (where x and y are any number) you are usi
 If you do not have Python installed or need a newer version you can go to:
 
 [![App Platorm](./images/2.png)](https://www.python.org/downloads/) *image 2*
+
+Below are some system specific notes to keep in mind.
+
+* `Linux`
+
+    On most Linux distributions Python comes pre-installed and/or available via the distribution's package managers. Below are some common examples, but refer to your specific distribution's documentation and package list to get the most up to date instructions.
+
+    If you'd like to download and build Python from source (or your distribution's package manager does not include a version of Python you need) you can download a source tarball from the general download page: https://www.python.org/downloads/
+    
+    *Debian or Ubuntu*
+    ```bash
+        apt-get install python3 python3-dev
+    ```
+## Learning Python
+### Introduction
+
+#### Why learn Python?
+Since you’re here, you probably know why, but let’s quickly review Python’s advantages!
+
+Python is one of the world’s most used and most popular programming languages. It’s powerful, versatile, and easy to learn. Python is widely used in various applications, some notable ones:
+
+* Web development
+* Data Science
+* Data analysis
+* Machine learning
+* Artificial Intelligence (AI)
+* Scripting and tooling
+
+Many people say that Python comes with batteries included. It’s a fun way to state that it includes a comprehensive base library. In addition, because so many people use Python, hundreds of thousands of high-quality libraries and frameworks exist to get things done quickly and without hassle. You can do a lot with a little bit of Python code!
+
+Learning Python is a no-brainer, and I promise you will be up and running quickly with this Python tutorial. Regardless of your future in IT, it will be a helpful tool to have in your toolbox!
+
+#### Python history 
+Let’s start by defining Python more precisely. Python is a computer programming language. Or, in other words, a vocabulary and set of grammatical rules for instructing a computer to perform tasks. Its original creator, Guido van Rossum, named it after the BBC television show ‘Monty Python’s Flying Circus.’ Hence, you’ll find that Python books, code examples, and documentation sometimes contain references to this television show.
+
+In 1987, Guido worked on a large distributed operating system at the CWI, a national research institute for mathematics and computer science in the Netherlands. Within that project, he had some freedom to work on side projects. With the knowledge and experience he had built up in the years before, working on a computer language called ABC, he started writing the Python programming language.
+
+Python is easy to learn, and it’s designed around a set of clearly defined principles (the Zen of Python) that encourage Python core developers to make a language that is unambiguous and easy to use.
+
+### Install Python
+#### Installation on MacOS
+On most versions of MacOS before Catalina, a distribution of Python is already included. Unfortunately, it’s almost certainly an old version, Python 2.7. Luckily, there are two ways to easily install Python 3 on a Mac.
+
+##### Homebrew
+First and foremost, I recommend looking into Homebrew. It allows you to install almost anything easily. The added benefits:
+
+* Homebrew packages are usually very up-to-date.
+* It’s also easy to upgrade to newer versions later on.
+
+However, you must be comfortable using a command-line shell to use Homebrew. If that’s entirely new for you, I recommend the following option for now: using the official installer.
+
+If you choose to install Homebrew, installing Python on MacOS is as easy as:
+```sh
+$ brew install python
+```
+##### Official installer
+Alternatively, you can download an installer from the Python download website. It’s easy and works like the installation of any other MacOS software program. The downside to this approach is that you won’t get automatic updates. Just like with Windows, you should ensure that Python is added to your system’s PATH.
+
+#### Install Python on Linux
+There are several ways to install Python on Linux, that is if you need to install it at all!
+
+##### Check what’s installed first
+Most Linux distributions include Python. Many will include both Python 2 and Python 3.
+
+If you enter python --version on the command line, you’ll see the version number. It’s probably version 2.7:
+```sh
+$ python --version
+Python 2.7.16
+```
+Unfortunately, you don’t want Python 2, but some OS’es still ship with it.
+
+Now try python3 --version. If you get a “command not found,” you must install Python 3. If your output looks similar to this, you’re in luck:
+```sh
+$ python3 --version
+Python 3.8.5    
+```
+
+##### Using a package manager
+Depending on the distribution of Linux you are running, you can install Python with the default package manager: Yum, APT, etcetera. You’ll need to determine which package manager is used for your specific Linux distribution and how to use it.
+
+If you’re on Ubuntu, Linux Mint, or Debian, you can install it using apt:
+```sh
+$ apt install python3 python-is-python3
+```
+This also installs a package called python-is-python3, which makes the command python point to python3. Trust me when I say it will save you a lot of headaches later on.
+
+### Quickstart
+Python is an interpreted programming language, this means that as a developer you write Python (.py) files in a text editor and then put those files into the python interpreter to be executed.
+
+### Python Syntax
+
+#### Whitespace and indentation
+If you’ve been working in other programming languages such as Java, C#, or C/C++, you know that these languages use semicolons (;) to separate the statements.
+
+However, Python uses whitespace and indentation to construct the code structure.
+
+The following shows a snippet of Python code:
+```py
+# define main function to print out something
+def main():
+    i = 1
+    max = 10
+    while (i < max):
+        print(i)
+        i = i + 1
+
+# call function main 
+main()
+```
+The meaning of the code isn’t important to you now. Please pay attention to the code structure instead.
+
+At the end of each line, you don’t see any semicolon to terminate the statement. And the code uses indentation to format the code.
+
+By using indentation and whitespace to organize the code, Python code gains the following advantages:
+
+* First, you’ll never miss the beginning or ending code of a block like in other programming languages such as Java or C#.
+* Second, the coding style is essentially uniform. If you have to maintain another developer’s code, that code looks the same as yours.
+* Third, the code is more readable and clear in comparison with other programming languages.
+
+#### Comments
+The comments are as important as the code because they describe why a piece of code was written.
+
+When the Python interpreter executes the code, it ignores the comments.
+
+In Python, a single-line comment begins with a hash (#) symbol followed by the comment. For example:
+
+```py
+# This is a single line comment in Python
+```
+And Python also supports other kinds of comments.
+
+#### Continuation of statements
+Python uses a newline character to separate statements. It places each statement on one line.
+
+However, a long statement can span multiple lines by using the backslash (\) character.
+
+The following example illustrates how to use the backslash (\) character to continue a statement in the second line:
+
+```py
+    if (a == True) and (b == False) and \
+    (c == True):
+        print("Continuation of statements")
+```
+
+#### Identifiers
+Identifiers are names that identify variables, functions, modules, classes, and other objects in Python.
+
+The name of an identifier needs to begin with a letter or underscore (_). The following characters can be alphanumeric or underscore.
+
+Python identifiers are case-sensitive. For example, the `counter` and `Counter` are different identifiers.
+
+In addition, you cannot use Python keywords for naming identifiers.
+
+#### Keywords
+Some words have special meanings in Python. They are called keywords.
+
+The following shows the list of keywords in Python:
+```py
+False      class      finally    is         return
+None       continue   for        lambda     try
+True       def        from       nonlocal   while
+and        del        global     not        with
+as         elif       if         or         yield
+assert     else       import     pass
+break      except     in         raise
+```
