@@ -771,9 +771,306 @@ AttributeError: 'float' object has no attribute 'upper'
 In this example, the variable type changes during the code’s execution. When value points to a string, you can use the .upper() method to convert the letters into uppercase. However, when the type changes to float, the .upper() method isn’t available, and you get an AttributeError exception.
 
 ##### Variables Can Use Type Hints
+You can use type hints to add explicit type information to your variables. To do this, you can use the following Python syntax:
+```py
+variable: data_type [= value]
+```
 
+The square brackets aren’t part of the syntax. They denote that the enclosed part is optional. Yes, you can declare a Python variable without assigning it a value:
+```py
+>>> number: int
+
+>>> number
+Traceback (most recent call last):
+    ...
+NameError: name 'number' is not defined
+```
+The variable declaration on the first line works and is valid Python syntax. However, this declaration doesn’t really create a new variable for you. That’s why when you try to access the number variable, you get a NameError exception. Even though number isn’t defined, Python has recorded the type hint:
+```py
+>>> __annotations__
+{'number': <class 'int'>}
+```
+
+When it comes to basic data types such as numbers and strings, type hints may look superfluous:
+```py
+>>> language: str = "Python"
+>>> number: int = 42
+>>> coefficient: float = 2.87
+```
+#### Using Complementary Ways to Create Variables
+In Python, you’ll find a few alternative ways to create new variables. Sometimes, defining several variables simultaneously with the same initial value is convenient or needed. To do this, you can use a parallel assignment.
+
+In other situations, you may need to initialize several variables with values from a sequence data type, like a list or tuple. In this case, you can use a technique called iterable unpacking.
+
+You’ll also find situations where you need to retain the value that results from a given expression. In this case, you can use an assignment expression.
+
+In the following sections, you’ll learn about all these alternative or complementary ways to create Python variables.
+
+##### Parallel Assignment
+Python also allows you to run multiple assignments in a single line of code. This feature makes it possible to assign the same value to several variables simultaneously:
+
+```py
+>>> is_authenticated = is_active = is_admin = False
+
+>>> is_authenticated
+False
+>>> is_active
+False
+>>> is_admin
+False
+```
+
+The parallel assignment in this example initializes three different but related variables to False simultaneously. This way of creating and initializing variables is more concise and less repetitive than the following:
+```py
+>>> is_authenticated = False
+>>> is_active = False
+>>> is_admin = False
+
+>>> is_authenticated
+False
+>>> is_active
+False
+>>> is_admin
+False
+```
+By using parallel assignments instead of dedicated assignments, you make your code more concise and less repetitive.
+
+##### Iterable Unpacking
+Iterable unpacking is a cool Python feature also known as tuple unpacking. It consists of distributing the values in an iterable into a series of variables. In most cases, the number of variables will match the number of items in the iterable. However, you can also use the *variable syntax to grab several items in a list.
+
+You can use iterable unpacking to create multiple variables at a time using an iterable of values. For example, say that you have some data about a person and want to create dedicated variables for each piece of data:
+
+```py
+>>> person = ("Jane", 25, "Python Dev")
+```
+If you didn’t know about iterable unpacking, then your first approach might be to distribute the data into different variables manually, as shown below:
+```py
+>>> name = person[0]
+>>> age = person[1]
+>>> job = person[2]
+
+>>> name
+'Jane'
+>>> age
+25
+>>> job
+'Python Dev'
+```
+This code works. However, using indices to extract the data may lead to an error-prone and hard-to-read result. Instead of using this technique, you can take advantage of iterable unpacking and end up with the following code:
+```py
+>>> name, age, job = person
+
+>>> name
+'Jane'
+>>> age
+25
+>>> job
+'Python Dev'
+```
+Now, your code looks cleaner and more readable. So, when you find yourself creating variables from iterables using indices, consider using unpacking instead.
+
+A great use case for unpacking is when you need to swap the values between two variables:
+
+```py
+>>> a = 5
+>>> b = 10
+
+>>> a, b = b, a
+
+>>> a
+10
+>>> b
+5
+```
+In the highlighted line, you swap the values of a and b without using a temporary variable, as you saw before. In this example, it’s important to note that the iterable to the right of the equal sign is a tuple of variables. 
 
 #### Summary
 * A variable is a label that you can assign a value to it. The value of a variable can change throughout the program.
 * Use the variable_name = value to create a variable.
 * The variable names should be as concise and descriptive as possible. Also, they should adhere to Python variable naming rules.
+
+### Data types
+#### Built-in Data Types
+In programming, data type is an important concept.
+
+Variables can store data of different types, and different types can do different things.
+
+Python has the following data types built-in by default, in these categories:
+A               | B
+----------------|--------------------------------
+Text Type:	    |      str
+Numeric Types:	|   int, float, complex
+Sequence Types:	|   list, tuple, range
+Mapping Type:	|   dict
+Set Types:	    |   set, frozenset
+Boolean Type:	|   bool
+Binary Types:	|   bytes, bytearray, memoryview
+None Type:	    |   NoneType
+|
+
+##### Getting the Data Type
+You can get the data type of any object by using the type() function:
+
+ExampleGet your own Python Server
+Print the data type of the variable x:
+```py
+x = 5
+print(type(x))
+```
+##### Setting the Data Type
+In Python, the data type is set when you assign a value to a variable:
+
+Example	          |      Data Type
+------------------|----------------	
+x = "Hello World" |	str	
+x = 20	          | int	
+x = 20.5	      | float
+|. . .
+
+##### Numbers
+There are three numeric types in Python:
+
+* int
+* float
+* complex
+
+Variables of numeric types are created when you assign a value to them:
+```py
+x = 1    # int
+y = 2.8  # float
+z = 1j   # complex
+```
+
+To verify the type of any object in Python, use the type() function:
+```py
+print(type(x))
+print(type(y))
+print(type(z))
+```
+
+###### Int
+Int, or integer, is a whole number, positive or negative, without decimals, of unlimited length.
+
+
+Integers:
+```py
+x = 1
+y = 35656222554887711
+z = -3255522
+
+print(type(x))
+print(type(y))
+print(type(z))
+```
+
+###### Float
+Float, or "floating point number" is a number, positive or negative, containing one or more decimals.
+
+```py
+x = 1.10
+y = 1.0
+z = -35.59
+
+print(type(x))
+print(type(y))
+print(type(z))
+```
+
+Float can also be scientific numbers with an "e" to indicate the power of 10.
+```py
+x = 35e3
+y = 12E4
+z = -87.7e100
+
+print(type(x))
+print(type(y))
+print(type(z))
+```
+
+###### Complex
+Complex numbers are written with a "j" as the imaginary part:
+
+Example
+Complex:
+
+x = 3+5j
+y = 5j
+z = -5j
+
+print(type(x))
+print(type(y))
+print(type(z))
+
+##### Type Conversion
+You can convert from one type to another with the int(), float(), and complex() methods:
+
+Convert from one type to another:
+```py
+x = 1    # int
+y = 2.8  # float
+z = 1j   # complex
+
+#convert from int to float:
+a = float(x)
+
+#convert from float to int:
+b = int(y)
+
+#convert from int to complex:
+c = complex(x)
+
+print(a)
+print(b)
+print(c)
+
+print(type(a))
+print(type(b))
+print(type(c))
+```
+
+##### Strings
+Strings in python are surrounded by either single quotation marks, or double quotation marks.
+
+'hello' is the same as "hello".
+
+You can display a string literal with the print() function:
+```py
+print("Hello")
+print('Hello')
+```
+
+###### Quotes Inside Quotes
+You can use quotes inside a string, as long as they don't match the quotes surrounding the string:
+```py
+print("It's alright")
+print("He is called 'Johnny'")
+print('He is called "Johnny"')
+```
+###### Assign String to a Variable
+Assigning a string to a variable is done with the variable name followed by an equal sign and the string:
+
+```py
+a = "Hello"
+print(a)
+```
+###### Multiline Strings
+You can assign a multiline string to a variable by using three quotes:
+
+
+You can use three double quotes:
+```py
+a = """Lorem ipsum dolor sit amet,
+consectetur adipiscing elit,
+sed do eiusmod tempor incididunt
+ut labore et dolore magna aliqua."""
+print(a)
+```
+Or three single quotes:
+
+```py
+a = '''Lorem ipsum dolor sit amet,
+consectetur adipiscing elit,
+sed do eiusmod tempor incididunt
+ut labore et dolore magna aliqua.'''
+print(a)
+```
