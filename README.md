@@ -1028,6 +1028,215 @@ print(type(b))
 print(type(c))
 ```
 
+##### Booleans
+Booleans represent one of two values: True or False.
+
+###### Boolean Values
+In programming you often need to know if an expression is True or False.
+
+You can evaluate any expression in Python, and get one of two answers, True or False.
+
+When you compare two values, the expression is evaluated and Python returns the Boolean answer:
+```py
+print(10 > 9)
+print(10 == 9)
+print(10 < 9)
+```
+
+###### Evaluate Values and Variables
+The bool() function allows you to evaluate any value, and give you True or False in return,
+
+Evaluate a string and a number:
+```py
+print(bool("Hello"))
+print(bool(15))
+```
+
+Evaluate two variables:
+```py
+x = "Hello"
+y = 15
+
+print(bool(x))
+print(bool(y))
+```
+
+###### Most Values are True
+Almost any value is evaluated to True if it has some sort of content.
+
+Any string is True, except empty strings.
+
+Any number is True, except 0.
+
+Any list, tuple, set, and dictionary are True, except empty ones.
+
+```Python
+bool("abc")
+bool(123)
+bool(["apple", "cherry", "banana"])
+```
+###### Some Values are False
+In fact, there are not many values that evaluate to False, except empty values, such as (), [], {}, "", the number 0, and the value None. And of course the value False evaluates to False.
+
+```Python
+bool(False)
+bool(None)
+bool(0)
+bool("")
+bool(())
+bool([])
+bool({})
+```
+##### Operators
+Operators are used to perform operations on variables and values.
+
+In the example below, we use the + operator to add together two values:
+```py
+print(10 + 5)
+```
+
+Python divides the operators in the following groups:
+* Arithmetic operators
+* Assignment operators
+* Comparison operators
+* Logical operators
+* Identity operators
+* Membership operators
+* Bitwise operators
+
+###### Python Arithmetic Operators
+
+Arithmetic operators are used with numeric values to perform common mathematical operations:
+
+| Operator | Name            | Example  |
+|----------|-----------------|----------|
+| +        | Addition        | x + y    |
+| -        | Subtraction     | x - y    |
+| *        | Multiplication  | x * y    |
+| /        | Division        | x / y    |
+| %        | Modulus         | x % y    |
+| **       | Exponentiation  | x ** y   |
+| //       | Floor division  | x // y   |
+
+###### Python Assignment Operators
+
+Assignment operators are used to assign values to variables:
+
+| Operator | Example     | Same As          |
+|----------|-------------|------------------|
+| =        | x = 5       | x = 5            |
+| +=       | x += 3      | x = x + 3        |
+| -=       | x -= 3      | x = x - 3        |
+| *=       | x *= 3      | x = x * 3        |
+| /=       | x /= 3      | x = x / 3        |
+| %=       | x %= 3      | x = x % 3        |
+| //=      | x //= 3     | x = x // 3       |
+| **=      | x **= 3     | x = x ** 3       |
+| &=       | x &= 3      | x = x & 3        |
+| \|=      | x \|= 3      | x = x | 3        |
+| ^=       | x ^= 3      | x = x ^ 3        |
+| >>=      | x >>= 3     | x = x >> 3       |
+| <<=      | x <<= 3     | x = x << 3       |
+| :=       | print(x := 3) | x = 3<br>print(x) |
+
+---
+
+###### Python Comparison Operators
+
+Comparison operators are used to compare two values:
+
+| Operator | Name                      | Example    |
+|----------|---------------------------|------------|
+| ==       | Equal                     | x == y     |
+| !=       | Not equal                 | x != y     |
+| >        | Greater than              | x > y      |
+| <        | Less than                 | x < y      |
+| >=       | Greater than or equal to  | x >= y     |
+| <=       | Less than or equal to     | x <= y     |
+
+---
+
+###### Python Logical Operators
+
+Logical operators are used to combine conditional statements:
+
+| Operator | Description                          | Example                           |
+|----------|--------------------------------------|-----------------------------------|
+| and      | Returns True if both statements are true | x < 5 and x < 10                  |
+| or       | Returns True if one of the statements is true | x < 5 or x < 4                  |
+| not      | Reverse the result, returns False if the result is true | not(x < 5 and x < 10)             |
+
+---
+
+###### Python Identity Operators
+
+Identity operators are used to compare the objects, not if they are equal, but if they are actually the same object, with the same memory location:
+
+| Operator  | Description                                   | Example    |
+|-----------|-----------------------------------------------|------------|
+| is        | Returns True if both variables are the same object | x is y     |
+| is not    | Returns True if both variables are not the same object | x is not y |
+
+---
+
+###### Python Membership Operators
+
+Membership operators are used to test if a sequence is presented in an object:
+
+| Operator   | Description                                      | Example    |
+|------------|--------------------------------------------------|------------|
+| in         | Returns True if a sequence with the specified value is present in the object | x in y     |
+| not in     | Returns True if a sequence with the specified value is not present in the object | x not in y |
+
+---
+
+###### Python Bitwise Operators
+
+Bitwise operators are used to compare (binary) numbers:
+
+| Operator | Name                 | Description                                                             | Example    |
+|----------|----------------------|-------------------------------------------------------------------------|------------|
+| &        | AND                  | Sets each bit to 1 if both bits are 1                                   | x & y      |
+| \|       | OR                   | Sets each bit to 1 if one of two bits is 1                              | x \| y     |
+| ^        | XOR                  | Sets each bit to 1 if only one of two bits is 1                         | x ^ y      |
+| ~        | NOT                  | Inverts all the bits                                                   | ~x         |
+| <<       | Zero fill left shift | Shift left by pushing zeros in from the right and let the leftmost bits fall off | x << 2     |
+| >>       | Signed right shift   | Shift right by pushing copies of the leftmost bit in from the left, and let the rightmost bits fall off | x >> 2     |
+
+##### Operator Precedence
+Operator precedence describes the order in which operations are performed.
+
+Parentheses has the highest precedence, meaning that expressions inside parentheses must be evaluated first:
+
+```py
+print((6 + 3) - (6 + 3))
+```
+
+Multiplication * has higher precedence than addition +, and therefor multiplications are evaluated before additions:
+
+```py
+print(100 + 5 * 3)
+```
+
+The precedence order is described in the table below, starting with the highest precedence at the top:
+
+| Operator                         | Description                                              |
+|----------------------------------|----------------------------------------------------------|
+| ()                               | Parentheses                                              |
+| **                               | Exponentiation                                           |
+| +x, -x, ~x                       | Unary plus, unary minus, and bitwise NOT                 |
+| *, /, //, %                      | Multiplication, division, floor division, and modulus    |
+| +, -                             | Addition and subtraction                                 |
+| <<, >>                           | Bitwise left and right shifts                            |
+| &                                | Bitwise AND                                              |
+| ^                                | Bitwise XOR                                              |
+| \|                               | Bitwise OR                                               |
+| ==, !=, >, >=, <, <=, is, is not, in, not in | Comparisons, identity, and membership operators         |
+| not                              | Logical NOT                                              |
+| and                              | AND                                                      |
+| or                               | OR                                                       |
+
+
 ##### Strings
 Strings in python are surrounded by either single quotation marks, or double quotation marks.
 
@@ -1074,3 +1283,343 @@ sed do eiusmod tempor incididunt
 ut labore et dolore magna aliqua.'''
 print(a)
 ```
+
+###### Strings are Arrays
+Like many other popular programming languages, strings in Python are arrays of bytes representing unicode characters.
+
+However, Python does not have a character data type, a single character is simply a string with a length of 1.
+
+Square brackets can be used to access elements of the string.
+
+Get the character at position 1 (remember that the first character has the position 0):
+
+```py
+a = "Hello, World!"
+print(a[1])
+```
+
+###### String Length
+To get the length of a string, use the len() function.
+
+
+The len() function returns the length of a string:
+```py
+a = "Hello, World!"
+print(len(a))
+```
+
+###### Check String
+To check if a certain phrase or character is present in a string, we can use the keyword in.
+
+
+Check if "free" is present in the following text:
+```py
+txt = "The best things in life are free!"
+print("free" in txt)
+```
+
+###### Check if NOT
+To check if a certain phrase or character is NOT present in a string, we can use the keyword not in.
+
+Check if "expensive" is NOT present in the following text:
+```py
+txt = "The best things in life are free!"
+print("expensive" not in txt)
+```
+
+###### Slicing Strings
+You can return a range of characters by using the slice syntax.
+
+Specify the start index and the end index, separated by a colon, to return a part of the string.
+
+Get the characters from position 2 to position 5 (not included):
+
+```py
+b = "Hello, World!"
+print(b[2:5])
+```
+
+> *Note*: The first character has index 0.
+
+###### Slice From the Start
+By leaving out the start index, the range will start at the first character:
+
+* Example: Get the characters from the start to position 5 (not included):
+```py
+b = "Hello, World!"
+print(b[:5])
+```
+
+###### Negative Indexing
+Use negative indexes to start the slice from the end of the string:
+
+Get the characters:
+
+From: "o" in "World!" (position -5)
+
+To, but not included: "d" in "World!" (position -2):
+```py
+b = "Hello, World!"
+print(b[-5:-2])
+```
+
+###### Concatenation
+
+To concatenate, or combine, two strings you can use the + operator.
+
+Merge variable a with variable b into variable c:
+```py
+a = "Hello"
+b = "World"
+c = a + b
+print(c)
+```
+
+To add a space between them, add a " ":
+```py
+a = "Hello"
+b = "World"
+c = a + " " + b
+print(c)
+```
+
+###### Format - Strings
+
+String Format
+As we know, we cannot combine strings and numbers like this:
+```py
+age = 36
+txt = "My name is John, I am " + age
+print(txt)
+```
+But we can combine strings and numbers by using f-strings or the format() method!
+
+###### F-Strings
+
+F-String was introduced in Python 3.6, and is now the preferred way of formatting strings.
+
+To specify a string as an f-string, simply put an f in front of the string literal, and add curly brackets {} as placeholders for variables and other operations.
+
+Create an f-string:
+```py
+age = 36
+txt = f"My name is John, I am {age}"
+print(txt)
+```
+###### Placeholders and Modifiers
+A placeholder can contain variables, operations, functions, and modifiers to format the value.
+
+Add a placeholder for the price variable:
+```py
+price = 59
+txt = f"The price is {price} dollars"
+print(txt)
+```
+A placeholder can include a modifier to format the value.
+
+A modifier is included by adding a colon : followed by a legal formatting type, like .2f which means fixed point number with 2 decimals:
+
+```py
+Display the price with 2 decimals:
+
+price = 59
+txt = f"The price is {price:.2f} dollars"
+print(txt)
+```
+
+A placeholder can contain Python code, like math operations:
+
+Perform a math operation in the placeholder, and return the result:
+```py
+txt = f"The price is {20 * 59} dollars"
+print(txt)
+```
+
+###### Escape Character
+To insert characters that are illegal in a string, use an escape character.
+
+An escape character is a backslash \ followed by the character you want to insert.
+
+An example of an illegal character is a double quote inside a string that is surrounded by double quotes:
+
+You will get an error if you use double quotes inside a string that is surrounded by double quotes:
+```py
+txt = "We are the so-called "Vikings" from the north."
+```
+To fix this problem, use the escape character \":
+
+The escape character allows you to use double quotes when you normally would not be allowed:
+```py
+txt = "We are the so-called \"Vikings\" from the north."
+```
+Escape Characters
+
+Code	    |Result	
+------------|-------------------
+\\'	        |    Single Quote	
+\\\         |    Backslash	
+\n	        |    New Line	
+\r	        |    Carriage Return	
+\t	        |    Tab	
+\b	        |    Backspace	
+\f	        |    Form Feed	
+\ooo	    |    Octal value	
+\xhh	    |    Hex value
+|
+
+###### Modify Strings
+Python has a set of built-in methods that you can use on strings.
+
+`upper()`
+
+The upper() method returns the string in upper case:
+```py
+a = "Hello, World!"
+print(a.upper())
+```
+
+`lower()`
+
+The lower() method returns the string in lower case:
+```py
+a = "Hello, World!"
+print(a.lower())
+```
+
+`strip()`
+
+Whitespace is the space before and/or after the actual text, and very often you want to remove this space.
+
+The strip() method removes any whitespace from the beginning or the end:
+
+```
+a = " Hello, World! "
+print(a.strip()) # returns "Hello, World!"
+```
+
+`replace()`
+The replace() method replaces a string with another string:
+```py
+a = "Hello, World!"
+print(a.replace("H", "J"))
+```
+
+`split()`
+The split() method returns a list where the text between the specified separator becomes the list items.
+
+The split() method splits the string into substrings if it finds instances of the separator:
+
+```py
+a = "Hello, World!"
+print(a.split(",")) # returns ['Hello', ' World!']
+```
+
+###### String Methods
+Method	                |            Description
+------------------------|-----------------------------------------------------
+capitalize()            |   Converts the first character to upper case|
+casefold()              |  	Converts string into lower case
+center()                |  	Returns a centered string
+count()                 |	Returns the number of times a specified value occurs in a string
+encode()                |  	Returns an encoded version of the string
+endswith()              |  	Returns true if the string ends with the specified value
+expandtabs()            |   Sets the tab size of the string
+find()                  |	Searches the string for a specified value and returns the position of where it was found
+format()                |  	Formats specified values in a string
+format_map()            |   Formats specified values in a string
+index()                 |	Searches the string for a specified value and returns the position of where it was found
+isalnum()               |  	Returns True if all characters in the string are alphanumeric
+isalpha()               |  	Returns True if all characters in the string are in the alphabet
+isascii()               |  	Returns True if all characters in the string are ascii characters
+isdecimal()             |  	Returns True if all characters in the string are decimals
+isdigit()               |  	Returns True if all characters in the string are digits
+isidentifier()          |   Returns True if the string is an identifier
+islower()               |  	Returns True if all characters in the string are lower case
+isnumeric()             |  	Returns True if all characters in the string are numeric
+isprintable()           |   Returns True if all characters in the string are printable
+isspace()               |  	Returns True if all characters in the string are whitespaces
+istitle()               |  	Returns True if the string follows the rules of a title
+isupper()               |  	Returns True if all characters in the string are upper case
+join()                  |	Joins the elements of an iterable to the end of the string
+ljust()                 |	Returns a left justified version of the string
+lower()                 |	Converts a string into lower case
+maketrans()             |  	Returns a translation table to be used in translations
+lstrip()                |  	Returns a left trim version of the string
+partition()             |  	Returns a tuple where the string is parted into three parts
+replace()               |  	Returns a string where a specified value is replaced with a specified value
+rfind()                 |	Searches the string for a specified value and returns the last position of where it was found
+rindex()                |  	Searches the string for a specified value and returns the last position of where it was found
+rjust()                 |	Returns a right justified version of the string
+rpartition()            |   Returns a tuple where the string is parted into three parts
+rsplit()                |  	Splits the string at the specified separator, and returns a list
+rstrip()                |  	Returns a right trim version of the string
+split()                 |	Splits the string at the specified separator, and returns a list
+splitlines()            |   Splits the string at line breaks and returns a list
+startswith()            |   Returns true if the string starts with the specified value
+strip()                 |	Returns a trimmed version of the string
+swapcase()              |  	Swaps cases, lower case becomes upper case and vice versa
+title()                 |	Converts the first character of each word to upper case
+translate()             |  	Returns a translated string
+upper()                 |	Converts a string into upper case
+zfill()                 |	Fills the string with a specified number of 0 values at the beginning
+|
+
+### Conditionals
+Conditional Statements in Python perform different actions depending on whether a specific condition evaluates to true or false. 
+Conditional Statements are handled by if-elif-else statements and MATCH-CASE statements in Python.
+
+#### Conditional Statements in Python
+We’ll start by looking at the most basic type of if statement. In its simplest form, it looks like this:
+
+```py
+if <expr>:
+    <statement>
+```
+
+In the form shown above:
+* **<expr\>** is an expression evaluated in a Boolean context, as discussed in the section on Logical Operators in the Operators and Expressions in Python tutorial.
+* **<statement\>** is a valid Python statement, which must be indented. (You will see why very soon.)
+
+If <expr\> is true (evaluates to a value that is “truthy”), then <statement\> is executed. If <expr> is false, then <statement> is skipped over and not executed.
+
+Note that the colon (:) following <expr\> is required. Some programming languages require <expr> to be enclosed in parentheses, but Python does not.
+
+Here are several examples of this type of if statement:
+```py
+>>> x = 0
+>>> y = 5
+
+>>> if x < y:                            # Truthy
+...     print('yes')
+...
+yes
+>>> if y < x:                            # Falsy
+...     print('yes')
+...
+
+>>> if x:                                # Falsy
+...     print('yes')
+...
+>>> if y:                                # Truthy
+...     print('yes')
+...
+yes
+
+>>> if x or y:                           # Truthy
+...     print('yes')
+...
+yes
+>>> if x and y:                          # Falsy
+...     print('yes')
+...
+
+>>> if 'aul' in 'grault':                # Truthy
+...     print('yes')
+...
+yes
+>>> if 'quux' in ['foo', 'bar', 'baz']:  # Falsy
+...     print('yes')
+...
+```
+
+###### Grouping Statements: Indentation and Blocks
