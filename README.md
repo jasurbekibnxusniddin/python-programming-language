@@ -1569,6 +1569,7 @@ Conditional Statements in Python perform different actions depending on whether 
 Conditional Statements are handled by if-elif-else statements and MATCH-CASE statements in Python.
 
 #### Conditional Statements in Python
+##### if
 We’ll start by looking at the most basic type of if statement. In its simplest form, it looks like this:
 
 ```py
@@ -1623,3 +1624,256 @@ yes
 ```
 
 ###### Grouping Statements: Indentation and Blocks
+So far, so good.
+
+But let’s say you want to evaluate a condition and then do more than one thing if it is true:
+>
+> If the weather is nice, then I will:
+>
+> * Mow the lawn
+>
+> * Weed the garden
+>
+> * Take the dog for a walk
+>
+>(If the weather isn’t nice, then I won’t do any of these things.)
+
+In all the examples shown above, each if `<expr>`: has been followed by only a single `<statement>`. There needs to be some way to say “If `<expr>` is true, do all of the following things.”
+
+The usual approach taken by most programming languages is to define a syntactic device that groups multiple statements into one compound statement or block. A block is regarded syntactically as a single entity. When it is the target of an if statement, and `<expr>` is true, then all the statements in the block are executed. If `<expr>` is false, then none of them are.
+
+Virtually all programming languages provide the capability to define blocks, but they don’t all provide it in the same way. Let’s see how Python does it.
+
+###### Python: It’s All About the Indentation
+Python follows a convention known as the off-side rule, a term coined by British computer scientist Peter J. Landin. (The term is taken from the offside law in association football.) Languages that adhere to the off-side rule define blocks by indentation. Python is one of a relatively small set of off-side rule languages.
+
+Recall from the previous tutorial on Python program structure that indentation has special significance in a Python program. Now you know why: indentation is used to define compound statements or blocks. In a Python program, contiguous statements that are indented to the same level are considered to be part of the same block.
+
+Thus, a compound if statement in Python looks like this:
+```py
+if <expr>:
+    <statement>
+    <statement>
+    ...
+    <statement>
+<following_statement>
+```
+
+Here, all the statements at the matching indentation level (lines 2 to 5) are considered part of the same block. The entire block is executed if `<expr>` is true, or skipped over if `<expr>` is false. Either way, execution proceeds with `<following_statement>` (line 6) afterward.
+
+![alt text](image-3.png)
+
+Notice that there is no token that denotes the end of the block. Rather, the end of the block is indicated by a line that is indented less than the lines of the block itself.
+
+>Note: In the Python documentation, a group of statements defined by indentation is often referred to as a suite. This tutorial series uses the terms block and suite interchangeably.
+
+Consider this script file foo.py:
+
+```py
+if 'foo' in ['bar', 'baz', 'qux']:
+    print('Expression was true')
+    print('Executing statement in suite')
+    print('...')
+    print('Done.')
+print('After conditional')
+```
+
+Running foo.py produces this output:
+
+```
+C:\> python foo.py
+After conditional
+```
+
+The four print() statements on lines 2 to 5 are indented to the same level as one another. They constitute the block that would be executed if the condition were true. But it is false, so all the statements in the block are skipped. After the end of the compound if statement has been reached (whether the statements in the block on lines 2 to 5 are executed or not), execution proceeds to the first statement having a lesser indentation level: the print() statement on line 6.
+
+Blocks can be nested to arbitrary depth. Each indent defines a new block, and each outdent ends the preceding block. The resulting structure is straightforward, consistent, and intuitive.
+
+Here is a more complicated script file called blocks.py:
+
+```py
+# Does line execute?                        Yes    No
+#                                           ---    --
+if 'foo' in ['foo', 'bar', 'baz']:        #  x
+    print('Outer condition is true')      #  x
+
+    if 10 > 20:                           #  x
+        print('Inner condition 1')        #        x
+
+    print('Between inner conditions')     #  x
+
+    if 10 < 20:                           #  x
+        print('Inner condition 2')        #  x
+
+    print('End of outer condition')       #  x
+print('After outer condition')            #  x
+```
+The output generated when this script is run is shown below:
+```
+C:\> python blocks.py
+Outer condition is true
+Between inner conditions
+Inner condition 2
+End of outer condition
+After outer condition
+```
+> Note: In case you have been wondering, the off-side rule is the reason for the necessity of the extra newline when entering multiline statements in a REPL session. The interpreter otherwise has no way to know that the last statement of the block has been entered.
+
+##### The else and elif Clauses
+
+Now you know how to use an if statement to conditionally execute a single statement or a block of several statements. It’s time to find out what else you can do.
+
+Sometimes, you want to evaluate a condition and take one path if it is true but specify an alternative path if it is not. This is accomplished with an else clause:
+
+```py
+if <expr>:
+    <statement(s)>
+else:
+    <statement(s)>
+```
+If `<expr>` is true, the first suite is executed, and the second is skipped. If `<expr>` is false, the first suite is skipped and the second is executed. Either way, execution then resumes after the second suite. Both suites are defined by indentation, as described above.
+
+In this example, x is less than 50, so the first suite (lines 4 to 5) are executed, and the second suite (lines 7 to 8) are skipped:
+```py
+>>> x = 20
+
+>>> if x < 50:
+...     print('(first suite)')
+...     print('x is small')
+... else:
+...     print('(second suite)')
+...     print('x is large')
+...
+(first suite)
+x is small
+```
+Here, on the other hand, x is greater than 50, so the first suite is passed over, and the second suite executed:
+```py
+>>> x = 120
+>>>
+>>> if x < 50:
+...     print('(first suite)')
+...     print('x is small')
+... else:
+...     print('(second suite)')
+...     print('x is large')
+...
+```
+```
+(second suite)
+x is large
+```
+There is also syntax for branching execution based on several alternatives. For this, use one or more elif (short for else if) clauses. Python evaluates each <expr> in turn and executes the suite corresponding to the first that is true. If none of the expressions are true, and an else clause is specified, then its suite is executed:
+
+```py
+if <expr>:
+    <statement(s)>
+elif <expr>:
+    <statement(s)>
+elif <expr>:
+    <statement(s)>
+    ...
+else:
+    <statement(s)>
+```
+An arbitrary number of elif clauses can be specified. The else clause is optional. If it is present, there can be only one, and it must be specified last:
+
+```py
+>>> name = 'Joe'
+>>> if name == 'Fred':
+...     print('Hello Fred')
+... elif name == 'Xander':
+...     print('Hello Xander')
+... elif name == 'Joe':
+...     print('Hello Joe')
+... elif name == 'Arnold':
+...     print('Hello Arnold')
+... else:
+...     print("I don't know who you are!")
+...
+```
+```
+Hello Joe
+```
+At most, one of the code blocks specified will be executed. If an else clause isn’t included, and all the conditions are false, then none of the blocks will be executed.
+
+> Note: Using a lengthy if/elif/else series can be a little inelegant, especially when the actions are simple statements like print(). In many cases, there may be a more Pythonic way to accomplish the same thing.
+> 
+> Here’s one possible alternative to the example above using the dict.get() method:
+> ```py
+> >>> names = {
+> ...     'Fred': 'Hello Fred',
+> ...     'Xander': 'Hello Xander',
+> ...     'Joe': 'Hello Joe',
+> ...     'Arnold': 'Hello Arnold'
+> ... }
+> 
+> >>> print(names.get('Joe', "I don't know who you are!"))
+> Hello Joe
+> >>> print(names.get('Rick', "I don't know who you are!"))
+> I don't know who you are!
+> ```
+> Recall from the tutorial on Python dictionaries that the dict.get() method searches a dictionary for the specified key and returns the associated value if it is found, or the given default value if it isn’t.
+
+An if statement with elif clauses uses short-circuit evaluation, analogous to what you saw with the and and or operators. Once one of the expressions is found to be true and its block is executed, none of the remaining expressions are tested. This is demonstrated below:
+
+```py
+>>> var  # Not defined
+Traceback (most recent call last):
+  File "<pyshell#58>", line 1, in <module>
+    var
+NameError: name 'var' is not defined
+
+>>> if 'a' in 'bar':
+...     print('foo')
+... elif 1/0:
+...     print("This won't happen")
+... elif var:
+...     print("This won't either")
+...
+```
+```
+foo
+```
+
+The second expression contains a division by zero, and the third references an undefined variable var. Either would raise an error, but neither is evaluated because the first condition specified is true.
+
+###### One-Line if Statements
+It is customary to write if <expr> on one line and <statement> indented on the following line like this:
+
+```py
+if <expr>:
+    <statement>
+```
+But it is permissible to write an entire if statement on one line. The following is functionally equivalent to the example above:
+
+```py
+if <expr>: <statement>
+```
+There can even be more than one <statement> on the same line, separated by semicolons:
+```py
+if <expr>: <statement_1>; <statement_2>; ...; <statement_n>
+```
+
+But what does this mean? There are two possible interpretations:
+
+1. If `<expr>` is true, execute `<statement_1>`.
+
+    Then, execute <statement_2> ... <statement_n> unconditionally, irrespective of whether <expr> is true or not.
+
+2. If `<expr>` is true, execute all of `<statement_1>` ... `<statement_n>`. Otherwise, don’t execute any of them.
+
+Python takes the latter interpretation. The semicolon separating the <statements> has higher precedence than the colon following <expr>—in computer lingo, the semicolon is said to bind more tightly than the colon. Thus, the <statements> are treated as a suite, and either all of them are executed, or none of them are:
+
+```py
+>>> if 'f' in 'foo': print('1'); print('2'); print('3')
+...
+1
+2
+3
+>>> if 'z' in 'foo': print('1'); print('2'); print('3')
+...
+```
+Multiple statements may be specified on the same line as an elif or else clause as well:
+
+
