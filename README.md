@@ -2547,3 +2547,51 @@ Then you will learn about iterables and iterators, two concepts that form the ba
 Finally, you’ll tie it all together and learn about Python’s for loops.
 
 ##### A Survey of Definite Iteration in Programming
+
+
+### Functions
+You may be familiar with the mathematical concept of a function. A function is a relationship or mapping between one or more inputs and a set of outputs. In mathematics, a function is typically represented like this:
+
+![alt text](image-5.png)
+
+Here, f is a function that operates on the inputs x and y. The output of the function is z. However, programming functions are much more generalized and versatile than this mathematical definition. In fact, appropriate function definition and use is so critical to proper software development that virtually all modern programming languages support both built-in and user-defined functions.
+
+In programming, a function is a self-contained block of code that encapsulates a specific task or related group of tasks. In previous tutorials in this series, you’ve been introduced to some of the built-in functions provided by Python. id(), for example, takes one argument and returns that object’s unique integer identifier:
+```py
+>>> s = 'foobar'
+>>> id(s)
+56313440
+```
+
+len() returns the length of the argument passed to it:
+
+```py
+>>> a = ['foo', 'bar', 'baz', 'qux']
+>>> len(a)
+4
+```
+any() takes an iterable as its argument and returns True if any of the items in the iterable are truthy and False otherwise:
+```py
+>>> any([False, False, False])
+False
+>>> any([False, True, False])
+True
+
+>>> any(['bar' == 'baz', len('foo') == 4, 'qux' in {'foo', 'bar', 'baz'}])
+False
+>>> any(['bar' == 'baz', len('foo') == 3, 'qux' in {'foo', 'bar', 'baz'}])
+True
+```
+Each of these built-in functions performs a specific task. The code that accomplishes the task is defined somewhere, but you don’t need to know where or even how the code works. All you need to know about is the function’s interface:
+
+1.   What arguments (if any) it takes
+2.   What values (if any) it returns
+
+Then you call the function and pass the appropriate arguments. Program execution goes off to the designated body of code and does its useful thing. When the function is finished, execution returns to your code where it left off. The function may or may not return data for your code to use, as the examples above do.
+
+When you define your own Python function, it works just the same. From somewhere in your code, you’ll call your Python function and program execution will transfer to the body of code that makes up the function.
+
+> Note: In this case, you will know where the code is and exactly how it works because you wrote it!
+
+When the function is finished, execution returns to the location where the function was called. Depending on how you designed the function’s interface, data may be passed in when the function is called, and return values may be passed back when it finishes.
+
