@@ -1876,4 +1876,674 @@ Python takes the latter interpretation. The semicolon separating the <statements
 ```
 Multiple statements may be specified on the same line as an elif or else clause as well:
 
+```py
+>>> x = 2
+>>> if x == 1: print('foo'); print('bar'); print('baz')
+... elif x == 2: print('qux'); print('quux')
+... else: print('corge'); print('grault')
+...
+```
+```
+qux
+quux
+```
+```py
+>>> x = 3
+>>> if x == 1: print('foo'); print('bar'); print('baz')
+... elif x == 2: print('qux'); print('quux')
+... else: print('corge'); print('grault')
+...
+```
+```
+corge
+grault
+```
+While all of this works, and the interpreter allows it, it is generally discouraged on the grounds that it leads to poor readability, particularly for complex if statements. PEP 8 specifically recommends against it.
 
+As usual, it is somewhat a matter of taste. Most people would find the following more visually appealing and easier to understand at first glance than the example above:
+
+```py
+>>> x = 3
+>>> if x == 1:
+...     print('foo')
+...     print('bar')
+...     print('baz')
+... elif x == 2:
+...     print('qux')
+...     print('quux')
+... else:
+...     print('corge')
+...     print('grault')
+...
+```
+```
+corge
+grault
+```
+
+If an if statement is simple enough, though, putting it all on one line may be reasonable. Something like this probably wouldn’t raise anyone’s hackles too much:
+```py
+debugging = True  # Set to True to turn debugging on.
+
+    .
+    .
+    .
+
+if debugging: print('About to call function foo()')
+foo()
+```
+
+###### Conditional Expressions (Python’s Ternary Operator)
+
+Python supports one additional decision-making entity called a conditional expression. 
+(It is also referred to as a conditional operator or ternary operator in various places in the Python documentation.) 
+Conditional expressions were proposed for addition to the language in PEP 308 and green-lighted by Guido in 2005.
+
+In its simplest form, the syntax of the conditional expression is as follows:
+
+```py
+<expr1> if <conditional_expr> else <expr2>
+```
+
+This is different from the if statement forms listed above because it is not a control structure that directs the flow of program execution. It acts more like an operator that defines an expression. In the above example, `<conditional_expr>` is evaluated first. If it is true, the expression evaluates to `<expr1>`. If it is false, the expression evaluates to `<expr2>`.
+
+Notice the non-obvious order: the middle expression is evaluated first, and based on that result, one of the expressions on the ends is returned. Here are some examples that will hopefully help clarify:
+
+```py
+>>> raining = False
+>>> print("Let's go to the", 'beach' if not raining else 'library')
+Lets go to the beach
+>>> raining = True
+>>> print("Lets go to the", 'beach' if not raining else 'library')
+Lets go to the library
+
+>>> age = 12
+>>> s = 'minor' if age < 21 else 'adult'
+>>> s
+'minor'
+
+>>> 'yes' if ('qux' in ['foo', 'bar', 'baz']) else 'no'
+'no'
+```
+> Note: Python’s conditional expression is similar to the <conditional_expr> ? <expr1> : <expr2> syntax used by many other languages—C, Perl and Java to name a few. In fact, the ?: operator is commonly called the ternary operator in those languages, which is probably the reason Python’s conditional expression is sometimes referred to as the Python ternary operator.
+>
+> You can see in PEP 308 that the <conditional_expr> ? <expr1> : <expr2> syntax was considered for Python but ultimately rejected in favor of the syntax shown above.
+
+A common use of the conditional expression is to select variable assignment. For example, suppose you want to find the larger of two numbers. Of course, there is a built-in function, max(), that does just this (and more) that you could use. But suppose you want to write your own code from scratch.
+
+You could use a standard if statement with an else clause:
+
+```py
+>>> if a > b:
+...     m = a
+... else:
+...     m = b
+...
+```
+But a conditional expression is shorter and arguably more readable as well:
+
+```py
+>>> m = a if a > b else b
+```
+
+Remember that the conditional expression behaves like an expression syntactically. It can be used as part of a longer expression. The conditional expression has lower precedence than virtually all the other operators, so parentheses are needed to group it by itself.
+
+In the following example, the + operator binds more tightly than the conditional expression, so 1 + x and y + 2 are evaluated first, followed by the conditional expression. The parentheses in the second case are unnecessary and do not change the result:
+```py
+>>> x = y = 40
+
+>>> z = 1 + x if x > y else y + 2
+>>> z
+42
+
+>>> z = (1 + x) if x > y else (y + 2)
+>>> z
+42
+```
+
+If you want the conditional expression to be evaluated first, you need to surround it with grouping parentheses. In the next example, (x if x > y else y) is evaluated first. The result is y, which is 40, so z is assigned 1 + 40 + 2 = 43:
+```py
+>>> x = y = 40
+
+>>> z = 1 + (x if x > y else y) + 2
+>>> z
+43
+```
+
+If you are using a conditional expression as part of a larger expression, it probably is a good idea to use grouping parentheses for clarification even if they are not needed.
+
+Conditional expressions also use short-circuit evaluation like compound logical expressions. Portions of a conditional expression are not evaluated if they don’t need to be.
+
+In the expression` <expr1>` if `<conditional_expr>` else `<expr2>`:
+* If `<conditional_expr>` is true, `<expr1>` is returned and `<expr2>` is not evaluated.
+* If `<conditional_expr>` is false, `<expr2>` is returned and `<expr1>` is not evaluated.
+
+As before, you can verify this by using terms that would raise an error:
+
+```py
+>>> 'foo' if True else 1/0
+'foo'
+>>> 1/0 if False else 'bar'
+'bar'
+```
+In both cases, the 1/0 terms are not evaluated, so no exception is raised.
+
+Conditional expressions can also be chained together, as a sort of alternative if/elif/else structure, as shown here:
+
+```py
+>>> s = ('foo' if (x == 1) else
+...      'bar' if (x == 2) else
+...      'baz' if (x == 3) else
+...      'qux' if (x == 4) else
+...      'quux'
+... )
+>>> s
+'baz'
+```
+
+It’s not clear that this has any significant advantage over the corresponding if/elif/else statement, but it is syntactically correct Python.
+
+###### The Python pass Statement
+Occasionally, you may find that you want to write what is called a code stub: a placeholder for where you will eventually put a block of code that you haven’t implemented yet.
+
+In languages where token delimiters are used to define blocks, like the curly braces in Perl and C, empty delimiters can be used to define a code stub. For example, the following is legitimate Perl or C code:
+
+```Perl
+# This is not Python
+if (x) {
+
+}
+```
+
+Here, the empty curly braces define an empty block. Perl or C will evaluate the expression x, and then even if it is true, quietly do nothing.
+
+Because Python uses indentation instead of delimiters, it is not possible to specify an empty block. If you introduce an if statement with if <expr>:, something has to come after it, either on the same line or indented on the following line.
+
+Consider this script foo.py:
+
+```py
+if True:
+
+print('foo')
+```
+
+If you try to run foo.py, you’ll get this:
+
+```sh
+C:\> python foo.py
+  File "foo.py", line 3
+    print('foo')
+        ^
+IndentationError: expected an indented block
+```
+
+The Python pass statement solves this problem. It doesn’t change program behavior at all. It is used as a placeholder to keep the interpreter happy in any situation where a statement is syntactically required, but you don’t really want to do anything:
+
+```py
+if True:
+    pass
+
+print('foo')
+```
+Now foo.py runs without error:
+```sh
+C:\> python foo.py
+foo
+```
+
+### Loops
+**`Iteration`** means executing the same block of code over and over, potentially many times. A programming structure that implements `iteration` is called a `loop`.
+
+In programming, there are two types of `iteration`, indefinite and definite:
+
+*   With `indefinite iteration`, the number of times the loop is executed isn’t specified explicitly in advance. Rather, the designated block is executed repeatedly as long as some condition is met.
+
+*   With `definite iteration`, the number of times the designated block will be executed is specified explicitly at the time the loop starts.
+
+In this tutorial, you’ll:
+
+*   Learn about the while loop, the Python control structure used for indefinite `iteration`
+*   See how to break out of a loop or loop `iteration` prematurely
+*   Explore infinite loops
+
+When you’re finished, you should have a good grasp of how to use indefinite `iteration` in Python.
+
+#### The while Loop
+Let’s see how Python’s while statement is used to construct loops. We’ll start simple and embellish as we go.
+
+The format of a rudimentary while loop is shown below:
+
+```py
+while <expr>:
+    <statement(s)>
+```
+`<statement(s)>` represents the block to be repeatedly executed, often referred to as the body of the loop. This is denoted with indentation, just as in an if statement.
+
+> **Remember:** All control structures in Python use indentation to define blocks. See the discussion on grouping statements in the previous tutorial to review.
+
+The controlling expression, `<expr>`, typically involves one or more variables that are initialized prior to starting the loop and then modified somewhere in the loop body.
+
+When a while loop is encountered, `<expr>` is first evaluated in Boolean context. If it is true, the loop body is executed. Then `<expr>` is checked again, and if still true, the body is executed again. This continues until `<expr>` becomes false, at which point program execution proceeds to the first statement beyond the loop body.
+
+Consider this loop:
+
+```py
+>>> n = 5
+>>> while n > 0:
+...     n -= 1
+...     print(n)
+...
+4
+3
+2
+1
+0
+```
+Here’s what’s happening in this example:
+
+*   n is initially 5. The expression in the while statement header on line 2 is n > 0, which is true, so the loop body executes. Inside the loop body on line 3, n is decremented by 1 to 4, and then printed.
+
+*   When the body of the loop has finished, program execution returns to the top of the loop at line 2, and the expression is evaluated again. It is still true, so the body executes again, and 3 is printed.
+
+*   This continues until n becomes 0. At that point, when the expression is tested, it is false, and the loop terminates. Execution would resume at the first statement following the loop body, but there isn’t one in this case.
+
+Note that the controlling expression of the while loop is tested first, before anything else happens. If it’s false to start with, the loop body will never be executed at all:
+
+```py
+>>> n = 0
+>>> while n > 0:
+...     n -= 1
+...     print(n)
+...
+```
+
+In the example above, when the loop is encountered, n is 0. The controlling expression n > 0 is already false, so the loop body never executes.
+
+Here’s another while loop involving a list, rather than a numeric comparison:
+
+```py
+>>> a = ['foo', 'bar', 'baz']
+>>> while a:
+...     print(a.pop(-1))
+...
+baz
+bar
+foo
+```
+When a list is evaluated in Boolean context, it is truthy if it has elements in it and falsy if it is empty. In this example, a is true as long as it has elements in it. Once all the items have been removed with the .pop() method and the list is empty, a is false, and the loop terminates.
+
+##### The Python break and continue Statements
+
+
+In each example you have seen so far, the entire body of the while loop is executed on each iteration. Python provides two keywords that terminate a loop iteration prematurely:
+
+*   The Python break statement immediately terminates a loop entirely. Program execution proceeds to the first statement following the loop body.
+
+*   The Python continue statement immediately terminates the current loop iteration. Execution jumps to the top of the loop, and the controlling expression is re-evaluated to determine whether the loop will execute again or terminate.
+
+The distinction between break and continue is demonstrated in the following diagram:
+
+![alt text](image-4.png) - break and continue
+
+Here’s a script file called break.py that demonstrates the break statement:
+
+```py
+n = 5
+while n > 0:
+    n -= 1
+    if n == 2:
+        break
+    print(n)
+print('Loop ended.')
+```
+
+Running break.py from a command-line interpreter produces the following output:
+```sh
+C:\Users\john\Documents>python break.py
+4
+3
+Loop ended.
+```
+When n becomes 2, the break statement is executed. The loop is terminated completely, and program execution jumps to the print() statement on line 7.
+
+> **Note**: If your programming background is in C, C++, Java, or JavaScript, then you may be wondering where Python’s do-while loop is. Well, the bad news is that Python doesn’t have a do-while construct. But the good news is that you can use a while loop with a break statement to emulate it.
+
+The next script, continue.py, is identical except for a continue statement in place of the break:
+```py
+n = 5
+while n > 0:
+    n -= 1
+    if n == 2:
+        continue
+    print(n)
+print('Loop ended.')
+```
+
+The output of continue.py looks like this:
+
+```py
+C:\Users\john\Documents>python continue.py
+4
+3
+1
+0
+Loop ended.
+```
+This time, when n is 2, the continue statement causes termination of that iteration. Thus, 2 isn’t printed. Execution returns to the top of the loop, the condition is re-evaluated, and it is still true. The loop resumes, terminating when n becomes 0, as previously.
+
+##### The else Clause
+
+Python allows an optional else clause at the end of a while loop. This is a unique feature of Python, not found in most other programming languages. The syntax is shown below:
+
+```py
+while <expr>:
+    <statement(s)>
+else:
+    <additional_statement(s)>
+```
+
+The `<additional_statement(s)>` specified in the else clause will be executed when the while loop terminates.
+
+
+About now, you may be thinking, “How is that useful?” You could accomplish the same thing by putting those statements immediately after the while loop, without the else:
+
+```py
+while <expr>:
+    <statement(s)>
+<additional_statement(s)>
+```
+
+What’s the difference?
+
+In the latter case, without the else clause, `<additional_statement(s)>` will be executed after the while loop terminates, no matter what.
+
+When `<additional_statement(s)>` are placed in an else clause, they will be executed only if the loop terminates “by exhaustion”—that is, if the loop iterates until the controlling condition becomes false. If the loop is exited by a break statement, the else clause won’t be executed.
+
+Consider the following example:
+
+```py
+>>> n = 5
+>>> while n > 0:
+...     n -= 1
+...     print(n)
+... else:
+...     print('Loop done.')
+...
+4
+3
+2
+1
+0
+Loop done.
+```
+
+In this case, the loop repeated until the condition was exhausted: n became 0, so n > 0 became false. Because the loop lived out its natural life, so to speak, the else clause was executed. Now observe the difference here:
+
+```py
+>>> n = 5
+>>> while n > 0:
+...     n -= 1
+...     print(n)
+...     if n == 2:
+...         break
+... else:
+...     print('Loop done.')
+...
+4
+3
+2
+```
+
+This loop is terminated prematurely with break, so the else clause isn’t executed.
+
+It may seem as if the meaning of the word else doesn’t quite fit the while loop as well as it does the if statement. Guido van Rossum, the creator of Python, has actually said that, if he had it to do over again, he’d leave the while loop’s else clause out of the language.
+
+One of the following interpretations might help to make it more intuitive:
+
+*   Think of the header of the loop (while n > 0) as an if statement (if n > 0) that gets executed over and over, with the else clause finally being executed when the condition becomes false.
+
+*   Think of else as though it were nobreak, in that the block that follows gets executed if there wasn’t a break.
+
+If you don’t find either of these interpretations helpful, then feel free to ignore them.
+
+When might an else clause on a while loop be useful? One common situation is if you are searching a list for a specific item. You can use break to exit the loop if the item is found, and the else clause can contain code that is meant to be executed if the item isn’t found:
+
+```py
+>>> a = ['foo', 'bar', 'baz', 'qux']
+>>> s = 'corge'
+
+>>> i = 0
+>>> while i < len(a):
+...     if a[i] == s:
+...         # Processing for item found
+...         break
+...     i += 1
+... else:
+...     # Processing for item not found
+...     print(s, 'not found in list.')
+...
+corge not found in list.
+```
+
+> Note: The code shown above is useful to illustrate the concept, but you’d actually be very unlikely to search a list that way.
+> 
+> First of all, lists are usually processed with definite iteration, not a while loop. Definite iteration is covered in the next tutorial in this series.
+> 
+> Secondly, Python provides built-in ways to search for an item in a list. You can use the in operator:
+> ```py
+> >>> if s in a:
+> ...     print(s, 'found in list.')
+> ... else:
+> ...     print(s, 'not found in list.')
+> ...
+> corge not found in list.
+> ```
+> The list.index() method would also work. This method raises a ValueError exception if the item isn’t found in the list, so you need to understand exception handling to use it. In Python, you use a try statement to handle an exception. An example is given below:
+> ```py
+> >>> try:
+> ...     print(a.index('corge'))
+> ... except ValueError:
+> ...     print(s, 'not found in list.')
+> ...
+> corge not found in list.
+> ```
+> You will learn about exception handling later in this series.
+
+An else clause with a while loop is a bit of an oddity, not often seen. But don’t shy away from it if you find a situation in which you feel it adds clarity to your code!
+
+##### Infinite Loops
+
+Suppose you write a while loop that theoretically never ends. Sounds weird, right?
+
+Consider this example:
+
+```py
+>>> while True:
+...     print('foo')
+...
+foo
+foo
+foo
+  .
+  .
+  .
+foo
+foo
+foo
+Traceback (most recent call last):
+  File "<pyshell#2>", line 2, in <module>
+    print('foo')
+KeyboardInterrupt
+````
+
+This code was terminated by Ctrl+C, which generates an interrupt from the keyboard. Otherwise, it would have gone on unendingly. Many foo output lines have been removed and replaced by the vertical ellipsis in the output shown.
+
+Clearly, True will never be false, or we’re all in very big trouble. Thus, while True: initiates an infinite loop that will theoretically run forever.
+
+Maybe that doesn’t sound like something you’d want to do, but this pattern is actually quite common. For example, you might write code for a service that starts up and runs forever accepting service requests. “Forever” in this context means until you shut it down, or until the heat death of the universe, whichever comes first.
+
+More prosaically, remember that loops can be broken out of with the break statement. It may be more straightforward to terminate a loop based on conditions recognized within the loop body, rather than on a condition evaluated at the top.
+
+Here’s another variant of the loop shown above that successively removes items from a list using .pop() until it is empty:
+
+```py
+>>> a = ['foo', 'bar', 'baz']
+>>> while True:
+...     if not a:
+...         break
+...     print(a.pop(-1))
+...
+baz
+bar
+foo
+```
+When a becomes empty, not a becomes true, and the break statement exits the loop.
+
+You can also specify multiple break statements in a loop:
+
+```py
+while True:
+    if <expr1>:  # One condition for loop termination
+        break
+    ...
+    if <expr2>:  # Another termination condition
+        break
+    ...
+    if <expr3>:  # Yet another
+        break
+```
+
+In cases like this, where there are multiple reasons to end the loop, it is often cleaner to break out from several different locations, rather than try to specify all the termination conditions in the loop header.
+
+Infinite loops can be very useful. Just remember that you must ensure the loop gets broken out of at some point, so it doesn’t truly become infinite.
+
+##### Nested while Loops
+
+In general, Python control structures can be nested within one another. For example, if/elif/else conditional statements can be nested:
+```py
+if age < 18:
+    if gender == 'M':
+        print('son')
+    else:
+        print('daughter')
+elif age >= 18 and age < 65:
+    if gender == 'M':
+        print('father')
+    else:
+        print('mother')
+else:
+    if gender == 'M':
+        print('grandfather')
+    else:
+        print('grandmother')
+```
+
+Similarly, a while loop can be contained within another while loop, as shown here:
+```py
+>>> a = ['foo', 'bar']
+>>> while len(a):
+...     print(a.pop(0))
+...     b = ['baz', 'qux']
+...     while len(b):
+...         print('>', b.pop(0))
+...
+foo
+> baz
+> qux
+bar
+> baz
+> qux
+```
+
+A break or continue statement found within nested loops applies to the nearest enclosing loop:
+```py
+while <expr1>:
+    statement
+    statement
+
+    while <expr2>:
+        statement
+        statement
+        break  # Applies to while <expr2>: loop
+
+    break  # Applies to while <expr1>: loop
+```
+
+Additionally, while loops can be nested inside if/elif/else statements, and vice versa:
+```py
+if <expr>:
+    statement
+    while <expr>:
+        statement
+        statement
+else:
+    while <expr>:
+        statement
+        statement
+    statement
+```
+```py
+while <expr>:
+    if <expr>:
+        statement
+    elif <expr>:
+        statement
+    else:
+        statement
+
+    if <expr>:
+        statement
+```
+
+In fact, all the Python control structures can be intermingled with one another to whatever extent you need. That is as it should be. Imagine how frustrating it would be if there were unexpected restrictions like “A while loop can’t be contained within an if statement” or “while loops can only be nested inside one another at most four deep.” You’d have a very difficult time remembering them all.
+
+Seemingly arbitrary numeric or logical limitations are considered a sign of poor program language design. Happily, you won’t find many in Python.
+
+##### One-Line while Loops
+As with an if statement, a while loop can be specified on one line. If there are multiple statements in the block that makes up the loop body, they can be separated by semicolons (;):
+
+```py
+>>> n = 5
+>>> while n > 0: n -= 1; print(n)
+
+4
+3
+2
+1
+0
+```
+
+This only works with simple statements though. You can’t combine two compound statements into one line. Thus, you can specify a while loop all on one line as above, and you write an if statement on one line:
+
+```py
+>>> if True: print('foo')
+
+foo
+```
+But you can’t do this:
+
+```py
+>>> while n > 0: n -= 1; if True: print('foo')
+SyntaxError: invalid syntax
+```
+Remember that PEP 8 discourages multiple statements on one line. So you probably shouldn’t be doing any of this very often anyhow.
+
+#### The for Loop
+This tutorial will show you how to perform definite iteration with a Python for loop.
+
+In the previous tutorial in this introductory series, you learned the following:
+
+Repetitive execution of the same block of code over and over is referred to as iteration.
+There are two types of iteration:
+Definite iteration, in which the number of repetitions is specified explicitly in advance
+Indefinite iteration, in which the code block executes until some condition is met
+In Python, indefinite iteration is performed with a while loop.
+Here’s what you’ll cover in this tutorial:
+
+You’ll start with a comparison of some different paradigms used by programming languages to implement definite iteration.
+
+Then you will learn about iterables and iterators, two concepts that form the basis of definite iteration in Python.
+
+Finally, you’ll tie it all together and learn about Python’s for loops.
+
+##### A Survey of Definite Iteration in Programming
