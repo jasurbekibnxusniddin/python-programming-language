@@ -2595,3 +2595,95 @@ When you define your own Python function, it works just the same. From somewhere
 
 When the function is finished, execution returns to the location where the function was called. Depending on how you designed the function’s interface, data may be passed in when the function is called, and return values may be passed back when it finishes.
 
+#### The Importance of Python Functions
+Virtually all programming languages used today support a form of user-defined functions, although they aren’t always called functions. In other languages, you may see them referred to as one of the following:
+
+*   Subroutines
+*   Procedures
+*   Methods
+*   Subprograms
+
+So, why bother defining functions? There are several very good reasons. Let’s go over a few now.
+
+##### Abstraction and Reusability
+Suppose you write some code that does something useful. As you continue development, you find that the task performed by that code is one you need often, in many different locations within your application. What should you do? Well, you could just replicate the code over and over again, using your editor’s copy-and-paste capability.
+
+Later on, you’ll probably decide that the code in question needs to be modified. You’ll either find something wrong with it that needs to be fixed, or you’ll want to enhance it in some way. If copies of the code are scattered all over your application, then you’ll need to make the necessary changes in every location.
+
+> Note: At first blush, that may seem like a reasonable solution, but in the long term, it’s likely to be a maintenance nightmare! While your code editor may help by providing a search-and-replace function, this method is error-prone, and you could easily introduce bugs into your code that will be difficult to find.
+
+A better solution is to define a Python function that performs the task. Anywhere in your application that you need to accomplish the task, you simply call the function. Down the line, if you decide to change how it works, then you only need to change the code in one location, which is the place where the function is defined. The changes will automatically be picked up anywhere the function is called.
+
+The abstraction of functionality into a function definition is an example of the Don’t Repeat Yourself (DRY) Principle of software development. This is arguably the strongest motivation for using functions.
+
+##### Modularity
+
+Functions allow complex processes to be broken up into smaller steps. 
+Imagine, for example, that you have a program that reads in a file, processes the file contents, and then writes an output file. Your code could look like this:
+
+```py
+# Main program
+
+# Code to read file in
+<statement>
+<statement>
+<statement>
+<statement>
+
+# Code to process file
+<statement>
+<statement>
+<statement>
+<statement>
+
+# Code to write file out
+<statement>
+<statement>
+<statement>
+<statement>
+```
+
+In this example, the main program is a bunch of code strung together in a long sequence, with whitespace and comments to help organize it. However, if the code were to get much lengthier and more complex, then you’d have an increasingly difficult time wrapping your head around it.
+
+Alternatively, you could structure the code more like the following:
+
+```py
+def read_file():
+    # Code to read file in
+    <statement>
+    <statement>
+    <statement>
+    <statement>
+
+def process_file():
+    # Code to process file
+    <statement>
+    <statement>
+    <statement>
+    <statement>
+
+def write_file():
+    # Code to write file out
+    <statement>
+    <statement>
+    <statement>
+    <statement>
+
+
+# Main program
+read_file()
+process_file()
+write_file()
+```
+This example is modularized. Instead of all the code being strung together, it’s broken out into separate functions, each of which focuses on a specific task. Those tasks are read, process, and write. The main program now simply needs to call each of these in turn.
+
+> Note: The def keyword introduces a new Python function definition. You’ll learn all about this very soon.
+
+1. In life, you do this sort of thing all the time, even if you don’t explicitly think of it that way. If you wanted to move some shelves full of stuff from one side of your garage to the other, then you hopefully wouldn’t just stand there and aimlessly think, “Oh, geez. I need to move all that stuff over there! How do I do that???” You’d divide the job into manageable steps:
+1. Take all the stuff off the shelves.
+1. Take the shelves apart.
+1. Carry the shelf parts across the garage to the new location.
+1. Re-assemble the shelves.
+1. Carry the stuff across the garage.
+1. Put the stuff back on the shelves.
+
