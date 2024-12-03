@@ -4229,3 +4229,326 @@ f() has been executed 3 time(s)
 ```
 
 Python function annotations are nothing more than dictionaries of metadata. It just happens that you can create them with convenient syntax that’s supported by the interpreter. They’re whatever you choose to make of them.
+
+### Exceptions
+Python exceptions provide a mechanism for handling errors that occur during the execution of a program. Unlike syntax errors, which are detected by the parser, Python raises exceptions when an error occurs in syntactically correct code. Knowing how to raise, catch, and handle exceptions effectively helps to ensure your program behaves as expected, even when encountering errors.
+
+In Python, you handle exceptions using a try … except block. This structure allows you to execute code normally while responding to any exceptions that may arise. You can also use else to run code if no exceptions occur, and the finally clause to execute code regardless of whether an exception was raised.
+
+By the end of this tutorial, you’ll understand that:
+
+* Exceptions in Python occur when syntactically correct code results in an error.
+* You can handle exceptions using the try, except, else, and finally keywords.
+* The try … except block lets you execute code and handle exceptions that arise.
+* Python 3 introduced more built-in exceptions compared to Python 2, making error handling more granular.
+* It’s bad practice to catch all exceptions at once using except Exception or the bare except clause.
+* Combining try, except, and pass allows your program to continue silently without handling the exception.
+* Using try … except is not inherently bad, but you should use it judiciously to handle only known issues appropriately.
+
+In this tutorial, you’ll get to know Python exceptions and all relevant keywords for exception handling by walking through a practical example of handling a platform-related exception. Finally, you’ll also learn how to create your own custom Python exceptions.
+
+#### Understanding Exceptions and Syntax Errors
+
+Syntax errors occur when the parser detects an incorrect statement. Observe the following example:
+
+```py
+>>> print(0 / 0))
+  File "<stdin>", line 1
+    print(0 / 0))
+                ^
+SyntaxError: unmatched ')'
+```
+
+The arrow indicates where the parser ran into the syntax error. Additionally, the error message gives you a hint about what went wrong. In this example, there was one bracket too many. Remove it and run your code again:
+
+```py
+>>> print(0 / 0)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ZeroDivisionError: division by zero
+```
+This time, you ran into an exception error. This type of error occurs whenever syntactically correct Python code results in an error. The last line of the message indicates what type of exception error you ran into.
+
+Instead of just writing exception error, Python details what type of exception error it encountered. In this case, it was a ZeroDivisionError. Python comes with various built-in exceptions as well as the possibility to create user-defined exceptions.
+
+#### Raising an Exception in Python
+There are scenarios where you might want to stop your program by raising an exception if a condition occurs. You can do this with the raise keyword:
+
+![alt text](image-11.png)
+
+You can even complement the statement with a custom message. Assume that you’re writing a tiny toy program that expects only numbers up to 5. You can raise an error when an unwanted condition occurs:
+
+```py
+number = 10
+if number > 5:
+    raise Exception(f"The number should not exceed 5. ({number=})")
+print(number)
+```
+
+In this example, you raised an Exception object and passed it an informative custom message. You built the message using an f-string and a self-documenting expression.
+
+When you run low.py, you’ll get the following output:
+
+```py
+Traceback (most recent call last):
+  File "./low.py", line 3, in <module>
+    raise Exception(f"The number should not exceed 5. ({number=})")
+Exception: The number should not exceed 5. (number=10)
+```
+
+The program comes to a halt and displays the exception to your terminal or REPL, offering you helpful clues about what went wrong. Note that the final call to print() never executed, because Python raised the exception before it got to that line of code.
+
+With the raise keyword, you can raise any exception object in Python and stop your program when an unwanted condition occurs.
+
+#### Debugging During Development With assert
+Before moving on to the most common way of working with exceptions in Python using the try … except block, you’ll take a quick look at an exception that’s a bit different than the others.
+
+Python offers a specific exception type that you should only use when debugging your program during development. This exception is the AssertionError. The AssertionError is special because you shouldn’t ever raise it yourself using raise.
+
+Instead, you use the assert keyword to check whether a condition is met and let Python raise the AssertionError if the condition isn’t met.
+
+The idea of an assertion is that your program should only attempt to run if certain conditions are in place. If Python checks your assertion and finds that the condition is True, then that is excellent! The program can continue. If the condition turns out to be False, then your program raises an AssertionError exception and stops right away:
+
+![alt text](image-12.png)
+
+Revisit your tiny script, low.py, from the previous section. Currently, you’re explicitly raising an exception when a certain condition isn’t met:
+
+
+low.py
+```py
+number = 1
+if number > 5:
+    raise Exception(f"The number should not exceed 5. ({number=})")
+print(number)
+```
+Assuming that you’ll handle this constraint safely for your production system, you could replace this conditional statement with an assertion for a quick way to retain this sanity check during development:
+
+```py
+number = 1
+assert (number < 5), f"The number should not exceed 5. ({number=})"
+print(number)
+```
+
+If the number in your program is below 5, then the assertion passes and your script continues with the next line of code. However, if you set number to a value higher than 5—for example, 10—then the outcome of the assertion will be False:
+
+low.py
+```py
+number = 10
+assert (number < 5), f"The number should not exceed 5. ({number=})"
+print(number)
+```
+In that case, Python raises an AssertionError that includes the message you passed, and ends the program execution:
+
+```sh
+$ python low.py
+Traceback (most recent call last):
+  File "./low.py", line 2, in <module>
+    assert (number < 5), f"The number should not exceed 5. ({number=})"
+            ^^^^^^^^^^
+AssertionError: The number should not exceed 5. (number=10)
+```
+
+In this example, raising an AssertionError exception is the last thing that the program will do. The program will then come to halt and won’t continue. The call to print() that follows the assertion won’t execute.
+
+Using assertions in this way can be helpful when you’re debugging your program during development because it can be quite a fast and straightforward to add assertions into your code.
+
+However, you shouldn’t rely on assertions for catching crucial run conditions of your program in production. That’s because Python globally disables assertions when you run it in optimized mode using the -O and -OO command line options:
+
+```sh
+$ python -O low.py
+10
+```
+
+In this run of your program, you used the -O command line option, which removes all assert statements. Therefore, your script ran all the way to the end and displayed a number that is dreadfully high!
+
+> Note: Alternatively, you can also disable assertions through the PYTHONOPTIMIZE environment variable.
+
+In production, your Python code may run using this optimized mode, which means that assertions aren’t a reliable way to handle runtime errors in production code. They can be quick and useful helpers when your debugging your code, but you should never use assertions to set crucial constraints for your program.
+
+If low.py should reliably fail when number is above 5, then it’s best to stick with raising an exception. However, sometimes you might not want your program to fail when it encounters an exception, so how should you handle those situations?
+
+#### Handling Exceptions With the try and except Block
+In Python, you use the try and except block to catch and handle exceptions. Python executes code following the try statement as a normal part of the program. The code that follows the except statement is the program’s response to any exceptions in the preceding try clause:
+
+![alt text](image-13.png)
+
+As you saw earlier, when syntactically correct code runs into an error, Python will raise an exception error. This exception error will crash the program if you don’t handle it. In the except clause, you can determine how your program should respond to exceptions.
+
+The following function can help you understand the try and except block:
+
+```py
+def linux_interaction():
+    import sys
+    if "linux" not in sys.platform:
+        raise RuntimeError("Function can only run on Linux systems.")
+    print("Doing Linux things.")
+```
+
+The linux_interaction() can only run on a Linux system. Python will raise a RuntimeError exception if you call it on an operating system other then Linux.
+
+> Note: Picking the right exception type can sometimes be tricky. Python comes with many built-in exceptions that are hierarchically related, so if you browse the documentation, you’re likely to find a fitting one.
+> 
+> Python even groups some of the exceptions into categories, such as warnings that you should use to indicate warning conditions, and OS exceptions that Python raises depending on system error codes.
+> 
+> If you still didn’t find a fitting exception, then you can create a custom exception.
+
+You can give the function a try by adding the following code:
+
+```py
+# ...
+
+try:
+    linux_interaction()
+except:
+    pass
+```
+
+The way you handled the error here is by handing out a pass. If you run this code on a macOS or Windows machine, then you get the following output:
+
+```sh
+$ python linux_interaction.py
+```
+
+You got nothing in response. The good thing here is that your program didn’t crash. But letting an exception that occurred pass silently is bad practice. You should always at least know about and log if some type of exception occurred when you ran your code.
+
+To this end, you can change pass into something that generates an informative message:
+
+linux_interaction.py
+```py
+# ...
+
+try:
+    linux_interaction()
+except:
+    print("Linux function wasn't executed.")
+```
+
+When you now execute this code on a macOS or Windows machine, you’ll see the message from your except block printed to the console:
+
+```sh
+$ python linux_interaction.py
+Linux function wasn't executed.
+```
+
+When an exception occurs in a program that runs this function, then the program will continue as well as inform you about the fact that the function call wasn’t successful.
+
+What you didn’t get to see was the type of error that Python raised as a result of the function call. In order to see exactly what went wrong, you’d need to catch the error that the function raised.
+
+The following code is an example where you capture the RuntimeError and output that message to your screen:
+
+```py
+# ...
+
+try:
+    linux_interaction()
+except RuntimeError as error:
+    print(error)
+    print("The linux_interaction() function wasn't executed.")
+```
+
+In the except clause, you assign the RuntimeError to the temporary variable error—often also called err—so that you can access the exception object in the indented block. In this case, you’re printing the object’s string representation, which corresponds to the error message attached to the object.
+
+Running this function on a macOS or Windows machine outputs the following:
+
+```sh
+$ python linux_interaction.py
+Function can only run on Linux systems.
+The linux_interaction() function wasn't executed.
+```
+
+The first message is the RuntimeError, informing you that Python can only execute the function on a Linux machine. The second message tells you which function wasn’t executed.
+
+In the example above, you called a function that you wrote yourself. When you executed the function, you caught the RuntimeError exception and printed it to your screen.
+
+Here’s another example where you open a file and use a built-in exception:
+
+```py
+try:
+    with open("file.log") as file:
+        read_data = file.read()
+except:
+    print("Couldn't open file.log")
+```
+
+If file.log doesn’t exist, then this block of code will output the following:
+
+```sh
+$ python open_file.py
+Couldn't open file.log
+```
+
+This is an informative message, and your program will still continue to run. However, your except block will currently catch any exception, whether that’s related to not being able to open the file or not. You could lead yourself onto a confusing path if you see this message even when Python raises a completely unrelated exception.
+
+Therefore, it’s always best to be specific when you’re handling an exception.
+
+In the Python docs, you can see that there are a couple of built-in exceptions that you could raise in such a situation, for example:
+
+> exception FileNotFoundError
+> 
+> Raised when a file or directory is requested but doesn’t exist. Corresponds to errno ENOENT. (Source)
+
+You want to handle the situation when Python can’t find the requested file. To catch this type of exception and print it to screen, you could use the following code:
+
+```py
+try:
+    with open("file.log") as file:
+        read_data = file.read()
+except FileNotFoundError as fnf_error:
+    print(fnf_error)
+```
+
+In this case, if file.log doesn’t exist, then the output will be the following:
+
+```sh
+$ python open_file.py
+[Errno 2] No such file or directory: 'file.log'
+```
+You can have more than one function call in your try clause and anticipate catching various exceptions. Something to note here is that the code in the try clause will stop as soon as it encounters any one exception.
+
+> Warning: When you use a bare except clause, then Python catches any exception that inherits from Exception—which are most built-in exceptions! Catching the parent class, Exception, hides all errors—even those which you didn’t expect at all. This is why you should avoid bare except clauses in your Python programs.
+> 
+> Instead, you’ll want to refer to specific exception classes that you want to catch and handle. You can learn more about why this is a good idea in this tutorial
+
+Look at the following code. Here, you first call linux_interaction() and then try to open a file:
+
+```py
+# ...
+
+try:
+    linux_interaction()
+    with open("file.log") as file:
+        read_data = file.read()
+except FileNotFoundError as fnf_error:
+    print(fnf_error)
+except RuntimeError as error:
+    print(error)
+    print("Linux linux_interaction() function wasn't executed.")
+```
+
+If you run this code on a macOS or Windows machine, then you’ll see the following:
+
+```sh
+$ python linux_interaction.py
+Function can only run on Linux systems.
+Linux linux_interaction() function wasn't executed
+```
+
+Inside the try clause, you ran into an exception immediately and didn’t get to the part where you attempt to open file.log. Now look at what happens when you run the code on a Linux machine if the file doesn’t exist:
+
+```py
+$ python linux_interaction.py
+[Errno 2] No such file or directory: 'file.log'
+```
+
+Note that if you’re handling specific exceptions as you did above, then the order of the except clauses doesn’t matter too much. It’s all about which of the exceptions Python raises first. As soon as Python raises an exception, it checks the except clauses from top to bottom and executes the first matching one that it finds.
+
+Here are the key takeaways about using Python’s try … except statements:
+
+* Python executes a try clause up until the point where it encounters the first exception.
+* Inside the except clause—the exception handler—you determine how the program responds to the exception.
+* You can anticipate multiple exceptions and differentiate how the program should respond to them.
+* Avoid using bare except clauses, because they can hide unexpected exceptions.
+
+While using try together with except is probably the most common error handling that you’ll encounter, there’s more that you can do to fine-tune your program’s response to exceptions.
+
+#### Proceeding After a Successful Try With else
