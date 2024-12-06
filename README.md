@@ -2548,6 +2548,52 @@ Finally, you’ll tie it all together and learn about Python’s for loops.
 
 ##### A Survey of Definite Iteration in Programming
 
+### Exceptions
+
+Python exceptions provide a mechanism for handling errors that occur during the execution of a program. Unlike syntax errors, which are detected by the parser, Python raises exceptions when an error occurs in syntactically correct code. Knowing how to raise, catch, and handle exceptions effectively helps to ensure your program behaves as expected, even when encountering errors.
+
+In Python, you handle exceptions using a try … except block. This structure allows you to execute code normally while responding to any exceptions that may arise. You can also use else to run code if no exceptions occur, and the finally clause to execute code regardless of whether an exception was raised.
+
+**By the end of this tutorial, you’ll understand that:**
+
+* Exceptions in Python occur when syntactically correct code results in an error.
+* You can handle exceptions using the try, except, else, and finally keywords.
+* The try … except block lets you execute code and handle exceptions that arise.
+* Python 3 introduced more built-in exceptions compared to Python 2, making error handling more granular.
+* It’s bad practice to catch all exceptions at once using except Exception or the bare except clause.
+* Combining try, except, and pass allows your program to continue silently without handling the exception.
+* Using try … except is not inherently bad, but you should use it judiciously to handle only known issues appropriately.
+
+In this tutorial, you’ll get to know Python exceptions and all relevant keywords for exception handling by walking through a practical example of handling a platform-related exception. Finally, you’ll also learn how to create your own custom Python exceptions.
+
+#### Understanding Exceptions and Syntax Errors
+Syntax errors occur when the parser detects an incorrect statement. Observe the following example:
+```py
+>>> print(0 / 0))
+  File "<stdin>", line 1
+    print(0 / 0))
+                ^
+SyntaxError: unmatched ')'
+```
+
+The arrow indicates where the parser ran into the syntax error. Additionally, the error message gives you a hint about what went wrong. In this example, there was one bracket too many. Remove it and run your code again:
+
+```py
+>>> print(0 / 0)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ZeroDivisionError: division by zero
+```
+
+This time, you ran into an exception error. This type of error occurs whenever syntactically correct Python code results in an error. The last line of the message indicates what type of exception error you ran into.
+
+Instead of just writing exception error, Python details what type of exception error it encountered. In this case, it was a ZeroDivisionError. Python comes with various built-in exceptions as well as the possibility to create user-defined exceptions.
+
+#### Raising an Exception in Python
+here are scenarios where you might want to stop your program by raising an exception if a condition occurs. You can do this with the raise keyword:
+
+![alt text](image-10.png)
+
 
 ### Functions
 You may be familiar with the mathematical concept of a function. A function is a relationship or mapping between one or more inputs and a set of outputs. In mathematics, a function is typically represented like this:
@@ -2679,7 +2725,7 @@ This example is modularized. Instead of all the code being strung together, it�
 
 > Note: The def keyword introduces a new Python function definition. You’ll learn all about this very soon.
 
-1. In life, you do this sort of thing all the time, even if you don’t explicitly think of it that way. If you wanted to move some shelves full of stuff from one side of your garage to the other, then you hopefully wouldn’t just stand there and aimlessly think, “Oh, geez. I need to move all that stuff over there! How do I do that???” You’d divide the job into manageable steps:
+In life, you do this sort of thing all the time, even if you don’t explicitly think of it that way. If you wanted to move some shelves full of stuff from one side of your garage to the other, then you hopefully wouldn’t just stand there and aimlessly think, “Oh, geez. I need to move all that stuff over there! How do I do that???” You’d divide the job into manageable steps:
 1. Take all the stuff off the shelves.
 1. Take the shelves apart.
 1. Carry the shelf parts across the garage to the new location.
